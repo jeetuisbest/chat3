@@ -33,6 +33,8 @@ app.post("/webhook", (req, res) => {
     // Parse the request body from the POST
     let body = req.body;
 
+    console.log("whatsapp post request", req.body)
+
     // Check the Incoming webhook message
     console.log(JSON.stringify(req.body, null, 2));
 
@@ -74,6 +76,8 @@ app.post("/webhook", (req, res) => {
 // Accepts GET requests at the /webhook endpoint. You need this URL to setup webhook initially.
 // info on verification request payload: https://developers.facebook.com/docs/graph-api/webhooks/getting-started#verification-requests 
 app.get("/webhook", (req, res) => {
+
+    console.log("helloooooooooooo")
     /**
      * UPDATE YOUR VERIFY TOKEN
      *This will be the Verify Token value when you set up webhook
