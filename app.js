@@ -78,7 +78,7 @@ app.post("/webhook", (req, res) => {
 // info on verification request payload: https://developers.facebook.com/docs/graph-api/webhooks/getting-started#verification-requests 
 app.get("/webhook", (req, res) => {
 
-    console.log("helloooooooooooo")
+    console.log("helloooooooooooo Request", req)
     /**
      * UPDATE YOUR VERIFY TOKEN
      *This will be the Verify Token value when you set up webhook
