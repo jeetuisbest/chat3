@@ -23,6 +23,7 @@ let port = process.env.PORT || 1337
 app.listen(port, () => console.log("webhook is listening" + `${port}`));
 
 app.get('/', (req, res) => {
+    console.log("helllooooooGETTTTTT")
     res.json({
         "deploy": true
     })
