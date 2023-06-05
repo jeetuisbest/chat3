@@ -13,6 +13,8 @@
 const token = process.env.WHATSAPP_TOKEN;
 
 // Imports dependencies and set up http server
+const http = require('http');
+const fetch = require('node-fetch');
 const request = require("request"),
     express = require("express"),
     body_parser = require("body-parser"),
@@ -20,40 +22,105 @@ const request = require("request"),
     app = express().use(body_parser.json()); // creates express http server
 let port = process.env.PORT || 1337
 // Sets server port and logs message on success
+
+const server = http.createServer((req, res) => {
+    checkCookie(req.headers.cookie, 'myCookie').then(hasCookie => {
+        if (hasCookie) {
+            res.end('Cookie is present');
+        } else {
+            makeAPICall().then(() => {
+                setCookie(res, 'myCookie', 'example');
+                res.end('API call made and cookie is set');
+            });
+        }
+    });
+});
+
+
 app.listen(port, () => {
     console.log("webhook is listening" + `${port}`)
-    // try {
+    try {
 
-    // https://graph.facebook.com/v12.0/100819983038758/messages?access_token=EAAVFkSD0htMBAGebAC0k1koHwEnR6XEUwPGS2HqTjZAlSmybdBHeAEXeGiMZAwzCzbMtjr65QTlExcfsAi2fLYKCU5Jd2tAdxViUeokf7CEyyWMUh0qVfSBEuvhaZBuqoZCnKYOlnMZCtKA9PqVEoOlSWGz5D36nEaCDsg45alHvjQS6FzALyiwZBjJoscFwzv9Q72UFXosQZDZD
-    // axios({
-    //     method: "POST",
-    //     url: "https://graph.facebook.com/v12.0/100819983038758/messages?access_token=" + token,
-    //     data: {
-    //         messaging_product: "whatsapp",
-    //         recipient_type: "individual",
-    //         to: "918080313557",
-    //         type: "template",
-    //         template: {
-    //             name: "hello_world",
-    //             language: {
-    //                 "code": "en_US"
-    //             }
-    //         }
-    //     },
-    //     headers: { "Content-Type": "application/json" }
-    // })
-    //     .then(response => {
-    //         console.log("Axios request successful:", response.data);
-    //     })
-    //     .catch(error => {
-    //         console.log("Axios request failed:", error);
-    //     });
+        // https://graph.facebook.com/v12.0/100819983038758/messages?access_token=EAAVFkSD0htMBAGebAC0k1koHwEnR6XEUwPGS2HqTjZAlSmybdBHeAEXeGiMZAwzCzbMtjr65QTlExcfsAi2fLYKCU5Jd2tAdxViUeokf7CEyyWMUh0qVfSBEuvhaZBuqoZCnKYOlnMZCtKA9PqVEoOlSWGz5D36nEaCDsg45alHvjQS6FzALyiwZBjJoscFwzv9Q72UFXosQZDZD
+        // axios({
+        //     method: "POST",
+        //     url: "https://graph.facebook.com/v12.0/100819983038758/messages?access_token=" + token,
+        //     data: {
+        //         messaging_product: "whatsapp",
+        //         recipient_type: "individual",
+        //         to: "918080313557",
+        //         type: "template",
+        //         template: {
+        //             name: "hello_world",
+        //             language: {
+        //                 "code": "en_US"
+        //             }
+        //         }
+        //     },
+        //     headers: { "Content-Type": "application/json" }
+        // })
+        //     .then(response => {
+        //         console.log("Axios request successful:", response.data);
+        //     })
+        //     .catch(error => {
+        //         console.log("Axios request failed:", error);
+        //     });
 
 
-    // } catch (error) {
-    //     console.log("first re failed", error)
-    // }
+    } catch (error) {
+        console.log("first re failed", error)
+    }
 });
+
+function checkCookie(cookieHeader, cookieName) {
+    if (cookieHeader) {
+        const cookies = cookieHeader.split(';');
+
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+
+            if (cookie.startsWith(`${cookieName}=`)) {
+                return Promise.resolve(true);
+            }
+        }
+    }
+
+    return Promise.resolve(false);
+}
+
+function makeAPICall() {
+    axios({
+        method: "POST",
+        url: "https://graph.facebook.com/v12.0/100819983038758/messages?access_token=" + token,
+        data: {
+            messaging_product: "whatsapp",
+            recipient_type: "individual",
+            to: "918080313557",
+            type: "template",
+            template: {
+                name: "hello_world",
+                language: {
+                    "code": "en_US"
+                }
+            }
+        },
+        headers: { "Content-Type": "application/json" }
+    })
+        .then(response => {
+            console.log("Axios request successful:", response.data);
+        })
+        .catch(error => {
+            console.log("Axios request failed:", error);
+        });
+    // Example API call using node-fetch
+}
+
+function setCookie(res, cookieName, cookieValue) {
+    const cookie = `${cookieName}=${cookieValue}`;
+    res.setHeader('Set-Cookie', cookie);
+}
+
+
 
 app.get('/', (req, res) => {
     console.log("helllooooooGETTTTTT")
