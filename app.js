@@ -22,24 +22,26 @@ let port = process.env.PORT || 1337
 // Sets server port and logs message on success
 app.listen(port, () => {
     console.log("webhook is listening" + `${port}`)
-
-    // axios({
-    //     method: "POST", // Required, HTTP method, a string, e.g. POST, GET
-    //     url:
-    //         "https://graph.facebook.com/v12.0/" +
-    //         phone_number_id +
-    //         "/messages?access_token=" +
-    //         token,
-    //     data: {
-    //         messaging_product: "whatsapp",
-    //         to: from,
-    //         text: {
-    //             body: "Welcome and congratulations!! This message demonstrates your ability to send a WhatsApp message notification from the Cloud API, hosted by Meta. Thank you for taking the time to test with us."
-    //         },
-    //     },
-    //     headers: { "Content-Type": "application/json" },
-    // });
-
+    try {
+        axios({
+            method: "POST", // Required, HTTP method, a string, e.g. POST, GET
+            url:
+                "https://graph.facebook.com/v12.0/" +
+                "100819983038758" +
+                "/messages?access_token=" +
+                token,
+            data: {
+                messaging_product: "whatsapp",
+                to: "15550433499",
+                text: {
+                    body: "Welcome and congratulations!! This message demonstrates your ability to send a WhatsApp message notification from the Cloud API, hosted by Meta. Thank you for taking the time to test with us."
+                },
+            },
+            headers: { "Content-Type": "application/json" },
+        });
+    } catch (error) {
+        console.log("first re failed", error)
+    }
 });
 
 app.get('/', (req, res) => {
@@ -57,6 +59,7 @@ app.post("/webhook", (req, res) => {
     //     console.log("--NO REQUEST--")
     //     return;
     // }
+
     let body = req.body;
 
     // console.log("whatsapp post request", req.body)
@@ -84,7 +87,7 @@ app.post("/webhook", (req, res) => {
                     "res": "Thank you for your positive feedback! We appreciate your kind words! we will work to give you amazing Results."
                 },
                 '103': {
-                    "rse": "We're sorry to hear that you had a less than satisfactory experience with our product/service. We take customer feedback seriously, and we apologize for any inconvenience caused. We would like to understand the issue better and work towards a resolution."
+                    "res": "We're sorry to hear that you had a less than satisfactory experience with our product/service. We take customer feedback seriously, and we apologize for any inconvenience caused. We would like to understand the issue better and work towards a resolution."
                 }
             }
 
@@ -103,6 +106,11 @@ app.post("/webhook", (req, res) => {
             // extract the message text from the webhook payload
 
             // console.log("msg_body-----------------------------------------/n", msg_body)
+            console.log("postttttttttttttttt", "https://graph.facebook.com/v12.0/" +
+                phone_number_id +
+                "/messages?access_token=" +
+                token)
+
             axios({
                 method: "POST", // Required, HTTP method, a string, e.g. POST, GET
                 url:
