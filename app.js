@@ -23,13 +23,21 @@ let port = process.env.PORT || 1337
 app.listen(port, () => {
     console.log("webhook is listening" + `${port}`)
     try {
+
+        // https://graph.facebook.com/v12.0/100819983038758/messages?access_token=EAAVFkSD0htMBAGebAC0k1koHwEnR6XEUwPGS2HqTjZAlSmybdBHeAEXeGiMZAwzCzbMtjr65QTlExcfsAi2fLYKCU5Jd2tAdxViUeokf7CEyyWMUh0qVfSBEuvhaZBuqoZCnKYOlnMZCtKA9PqVEoOlSWGz5D36nEaCDsg45alHvjQS6FzALyiwZBjJoscFwzv9Q72UFXosQZDZD
         axios({
             method: "POST",
             url: "https://graph.facebook.com/v12.0/100819983038758/messages?access_token=" + token,
             data: {
                 messaging_product: "whatsapp",
-                to: "15550433499",
-                text: { body: "HELLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOOO" }
+                to: "918080313557",
+                type: "template",
+                template: {
+                    "name": "hello_world",
+                    "language": {
+                        "code": "en_US"
+                    }
+                }
             },
             headers: { "Content-Type": "application/json" }
         })
