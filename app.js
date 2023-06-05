@@ -33,16 +33,16 @@ app.get('/', (req, res) => {
 app.post("/webhook", (req, res) => {
     // Parse the request body from the POST
 
-    if (!req) {
-        console.log("--NO REQUEST--")
-        return;
-    }
+    // if (!req) {
+    //     console.log("--NO REQUEST--")
+    //     return;
+    // }
     let body = req.body;
 
     // console.log("whatsapp post request", req.body)
 
     // Check the Incoming webhook message
-    console.log("--------------------------------------------------------/n", JSON.stringify(req.body, null, 2));
+    // console.log("--------------------------------------------------------/n", JSON.stringify(req.body, null, 2));
 
     // info on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
     if (req.body.object) {
@@ -53,6 +53,8 @@ app.post("/webhook", (req, res) => {
             req.body.entry[0].changes[0].value.messages &&
             req.body.entry[0].changes[0].value.messages[0]
         ) {
+
+            console.log("req.body.entry[0].changes[0].value", req.body.entry[0].changes[0].value)
             let phone_number_id =
                 req.body.entry[0].changes[0].value.metadata.phone_number_id;
             let from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
