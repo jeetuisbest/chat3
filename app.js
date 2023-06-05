@@ -33,9 +33,7 @@ app.listen(port, () => {
             data: {
                 messaging_product: "whatsapp",
                 to: "15550433499",
-                text: {
-                    body: "Welcome and congratulations!! This message demonstrates your ability to send a WhatsApp message notification from the Cloud API, hosted by Meta. Thank you for taking the time to test with us."
-                },
+                text: { body: "HELLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOOO" }
             },
             headers: { "Content-Type": "application/json" },
         });
