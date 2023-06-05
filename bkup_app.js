@@ -20,27 +20,7 @@ const request = require("request"),
     app = express().use(body_parser.json()); // creates express http server
 let port = process.env.PORT || 1337
 // Sets server port and logs message on success
-app.listen(port, () => {
-    console.log("webhook is listening" + `${port}`)
-
-    // axios({
-    //     method: "POST", // Required, HTTP method, a string, e.g. POST, GET
-    //     url:
-    //         "https://graph.facebook.com/v12.0/" +
-    //         phone_number_id +
-    //         "/messages?access_token=" +
-    //         token,
-    //     data: {
-    //         messaging_product: "whatsapp",
-    //         to: from,
-    //         text: {
-    //             body: "Welcome and congratulations!! This message demonstrates your ability to send a WhatsApp message notification from the Cloud API, hosted by Meta. Thank you for taking the time to test with us."
-    //         },
-    //     },
-    //     headers: { "Content-Type": "application/json" },
-    // });
-
-});
+app.listen(port, () => console.log("webhook is listening" + `${port}`));
 
 app.get('/', (req, res) => {
     console.log("helllooooooGETTTTTT")
@@ -52,17 +32,12 @@ app.get('/', (req, res) => {
 // Accepts POST requests at /webhook endpoint
 app.post("/webhook", (req, res) => {
     // Parse the request body from the POST
-
-    // if (!req) {
-    //     console.log("--NO REQUEST--")
-    //     return;
-    // }
     let body = req.body;
 
     // console.log("whatsapp post request", req.body)
 
     // Check the Incoming webhook message
-    // console.log("--------------------------------------------------------/n", JSON.stringify(req.body, null, 2));
+    console.log("--------------------------------------------------------/n", JSON.stringify(req.body, null, 2));
 
     // info on WhatsApp text message payload: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples#text-messages
     if (req.body.object) {
@@ -73,34 +48,10 @@ app.post("/webhook", (req, res) => {
             req.body.entry[0].changes[0].value.messages &&
             req.body.entry[0].changes[0].value.messages[0]
         ) {
-            // console.log("req.body.entry[0].changes[0].value", req.body.entry[0].changes[0].value)
-            console.log("context", req.body.entry[0].changes[0].value.messages[0].context)
-            console.log("interactive", req.body.entry[0].changes[0].value.messages[0].interactive)
-            let interactiveReplies = {
-                '101': {
-                    "res": "Thank you for your amazing feedback! We greatly appreciate it!"
-                },
-                '102': {
-                    "res": "Thank you for your positive feedback! We appreciate your kind words! we will work to give you amazing Results."
-                },
-                '103': {
-                    "rse": "We're sorry to hear that you had a less than satisfactory experience with our product/service. We take customer feedback seriously, and we apologize for any inconvenience caused. We would like to understand the issue better and work towards a resolution."
-                }
-            }
-
             let phone_number_id =
                 req.body.entry[0].changes[0].value.metadata.phone_number_id;
-            console.log("phone_number_id", phone_number_id)
             let from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
-
-            if (req.body.entry[0].changes[0].value.messages[0].text) {
-                msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
-            } else if (req.body.entry[0].changes[0].value.messages[0].interactive) {
-                console.log("---console--ala", req.body.entry[0].changes[0].value)
-                let replyId = req.body.entry[0].changes[0].value.messages[0].interactive.button_reply.id
-                msg_body = interactiveReplies[replyId].res
-            }
-            // extract the message text from the webhook payload
+            let msg_body = req.body.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
 
             console.log("msg_body-----------------------------------------/n", msg_body)
             axios({
