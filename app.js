@@ -24,19 +24,23 @@ app.listen(port, () => {
     console.log("webhook is listening" + `${port}`)
     try {
         axios({
-            method: "POST", // Required, HTTP method, a string, e.g. POST, GET
-            url:
-                "https://graph.facebook.com/v12.0/" +
-                "100819983038758" +
-                "/messages?access_token=" +
-                token,
+            method: "POST",
+            url: "https://graph.facebook.com/v12.0/100819983038758/messages?access_token=" + token,
             data: {
                 messaging_product: "whatsapp",
                 to: "15550433499",
                 text: { body: "HELLLLLLLLLLLLOOOOOOOOOOOOOOOOOOOOOOO" }
             },
-            headers: { "Content-Type": "application/json" },
-        });
+            headers: { "Content-Type": "application/json" }
+        })
+            .then(response => {
+                console.log("Axios request successful:", response.data);
+            })
+            .catch(error => {
+                console.log("Axios request failed:", error);
+            });
+
+
     } catch (error) {
         console.log("first re failed", error)
     }
