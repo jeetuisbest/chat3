@@ -92,7 +92,7 @@ app.post("/webhook", (req, res) => {
                 req.body.entry[0].changes[0].value.metadata.phone_number_id;
             console.log("phone_number_id", phone_number_id)
             let from = req.body.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
-
+            let msg_body = "Okay"
             if (req.body.entry[0].changes[0].value.messages[0].text) {
                 msg_body = req.body.entry[0].changes[0].value.messages[0].text.body;
             } else if (req.body.entry[0].changes[0].value.messages[0].interactive) {
@@ -102,7 +102,7 @@ app.post("/webhook", (req, res) => {
             }
             // extract the message text from the webhook payload
 
-            console.log("msg_body-----------------------------------------/n", msg_body)
+            // console.log("msg_body-----------------------------------------/n", msg_body)
             axios({
                 method: "POST", // Required, HTTP method, a string, e.g. POST, GET
                 url:
