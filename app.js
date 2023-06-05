@@ -55,7 +55,7 @@ app.post("/webhook", (req, res) => {
         ) {
             console.log("req.body.entry[0].changes[0].value", req.body.entry[0].changes[0].value)
             console.log("context", req.body.entry[0].changes[0].value.messages[0].context)
-            console.log("interactive", req.body.entry[0].changes[0].value.interactive)
+            console.log("interactive", req.body.entry[0].changes[0].value.messages[0].interactive)
 
             let phone_number_id =
                 req.body.entry[0].changes[0].value.metadata.phone_number_id;
